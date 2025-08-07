@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+body {
+  @apply font-sans bg-gray-900 text-white transition-all duration-300;
+}
+.hover\:rotate-x-1:hover {
+  transform: perspective(1000px) rotateX(1deg);
+}
+.hover\:-rotate-x-1:hover {
+  transform: perspective(1000px) rotateX(-1deg);
+}
+.hover\:rotate-y-2:hover {
+  transform: perspective(1000px) rotateY(2deg);
+}
+/* Light Mode (default) */
+.custom-select option {
+  background-color: white;
+    color: black;
+
+}
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .custom-select option {
+    background-color:#1f2937;/* Tailwind gray-800 */
+    color: #f9fafb;
+        
+  }
+} 
