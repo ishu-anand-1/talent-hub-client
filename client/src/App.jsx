@@ -17,12 +17,16 @@ import VideoCategoryPage from "./pages/VideoCategoryPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifiedPage from "./pages/VerifiedPage";
-
+//import './styles/floatingShapes.css';
 //import RippleCursor from "./components/RippleCursor";
 //import FluidCanvas from "./components/FluidCanvas";
 function App() {
+  
+
+
   return (
-    
+   
+
     <Router>
       
       <div className="relative min-h-screen w-full font-poppins ">
@@ -61,6 +65,7 @@ function App() {
       </div>
     </Router>
   );
+  
 }
 
 export default App;

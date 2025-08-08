@@ -1,16 +1,23 @@
-const express = require("express");
+import express from "express";
+import * as playlistController from "../controllers/playlistController.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const playlistController = require("../controllers/playlistController");
 
+// Create a playlist (auth required)
+router.post("/", verifyToken, playlistController.createPlaylist);
 
-router.post("/", playlistController.createPlaylist);
-
+// Get all playlists (public or protected — your choice)
 router.get("/", playlistController.getAllPlaylists);
 
+// Get a playlist by ID
 router.get("/:id", playlistController.getPlaylistById);
 
-router.put("/:id", playlistController.updatePlaylist);
+// Update a playlist (auth required)
+router.put("/:id", verifyToken, playlistController.updatePlaylist);
 
-router.delete("/:id", playlistController.deletePlaylist);
+// Delete a playlist (auth required)
+router.delete("/:id", verifyToken, playlistController.deletePlaylist);
 
-module.exports = router;
+export default router;
+

@@ -1,5 +1,5 @@
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,13 +7,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+export const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'talenthub_videos',
-    resource_type: 'videos', // Important!
-    allowed_formats: ['mp4', 'mov', 'avi'],
+    folder: "talenthub_videos",
+    resource_type: "video", // should be singular 'video' for Cloudinary
+    allowed_formats: ["mp4", "mov", "avi"],
   },
 });
 
-module.exports = { cloudinary, storage };
+export default cloudinary;

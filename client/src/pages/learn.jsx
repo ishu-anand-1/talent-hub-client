@@ -23,6 +23,7 @@ const Learn = () => {
         // Normalize data
         const normalized = response.data.map((video) => ({
           ...video,
+          id: video._id || video.id || Math.random().toString(36).substr(2, 9), // Ensure unique ID
           genre: video.genre?.toLowerCase() || "",
           level: video.level?.toLowerCase() || "",
           tags: video.tags?.toLowerCase() || "",
@@ -115,7 +116,7 @@ const Learn = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filtered.slice(0, visibleCount).map((video) => (
               <div
-                key={video.id}
+                key={video.id} // ✅ Unique key here
                 className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl shadow-lg p-4 transform transition hover:-translate-y-1 hover:scale-105 duration-300 cursor-pointer"
                 onClick={() => openModal(video)}
               >

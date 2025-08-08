@@ -1,19 +1,20 @@
-const express = require("express");
-//const authController = require("../controllers/authController");
-const userController = require("../controllers/userController"); // ✅ Add this
-const { verifyToken } = require("../middleware/authMiddleware");
-
+import express from "express";
+import {  getUserById,getProfile } from "../controllers/userController.js";
+import { verifyToken } from "../middleware/authMiddleware.js"; // ✅ Changed to import
+import {register, login,} from "../controllers/authController.js"
 const router = express.Router();
 
-//router.post("/register", authController.register);
-//router.post("/login", authController.login);
+// Public routes
+router.post("/register", register);
+router.post("/login", login);
 
-// Example protected route
+// Test protected route
 router.get("/protected", verifyToken, (req, res) => {
   res.json({ message: "Protected route accessed", user: req.user });
 });
+router.get("/profile", verifyToken, getProfile);
 
+// Get user by ID (protected)
+router.get("/:id", verifyToken, getUserById);
 
-router.get("/:id", userController.getUserById);
-
-module.exports = router;
+export default router;

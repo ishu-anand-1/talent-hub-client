@@ -1,78 +1,60 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const userRoutes = require("./routes/userRoutes");
-const videoRoutes = require('./routes/videoRoutes');
-const postRoutes = require('./routes/postRoutes');
-const playlistRoutes = require("./routes/playlistRoutes");
-const authRoutes = require('./routes/authRoutes');
-const multer = require('multer');
-const path = require('path');
-const db = require("./config/db"); 
-const cookieParser =require("cookie-parser")
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import connectDB from './config/db.js';
 
-const storage= multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-  }
-});
-const upload = multer({ storage :storage });
+// Import routes (all must use `export default`)
+import authRoutes from './routes/authRoutes.js';
+import videoRoutes from './routes/videoRoutes.js';
+import playlistRoutes from './routes/playlistRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import postRoutes from './routes/postRoutes.js';
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
+// Connect to MongoDB Atlas
+connectDB();
 
-// CORS config
-// app.use(cors({
-//   origin: "http://localhost:5173",
-//   credentials: true
-// }));
+// CORS configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://talent-hub-client.vercel.app'
+];
 
 app.use(cors({
-  origin: "http://localhost:5173", // ✅ Only allow your frontend origin
-  credentials: true,              // ✅ Allow cookies/sessions
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g., Postman, server-to-server)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
+app.use(express.json());
 app.use(cookieParser());
 
-// Body parsers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.post('/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-  res.status(200).json({
-    message: 'File uploaded successfully',
-    file: req.file
-  });
-});
-// Test route
-app.get("/ping", (req, res) => {
-  res.send("pong");
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/playlists', playlistRoutes);
+
+// Default route
+app.get('/', (req, res) => {
+  res.send('API is running...');
 });
 
-// API routes
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/videos", videoRoutes);
-app.use("/api/posts", postRoutes);
-app.use("/api/playlists", playlistRoutes);
-// app.use("/api/videos", require("./routes/videoRoutes"));
-
-// Check DB connection and start server
-const PORT = process.env.PORT || 5000;
-db.getConnection()
-  .then(() => {
-    console.log("✅ Connected to MySQL database");
-    app.listen(PORT, () => console.log(` Server running on http://localhost:${PORT}`));
-  })
-  .catch((err) => {
-    console.error("❌ MySQL connection failed:", err);
-    process.exit(1);
-  });
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

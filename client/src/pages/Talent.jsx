@@ -107,7 +107,7 @@ const Talent = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {filteredVideos.map((video) => (
             <div
-              key={video.id}
+               key={video._id || video.id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300"
             >
               <div className="relative pb-[56.25%]">
