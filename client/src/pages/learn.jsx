@@ -17,13 +17,11 @@ const Learn = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get("/videos/get-all-video");
-        console.log("Raw videos from server:", response.data);
+        const { data } = await axios.get("/videos/get-all-video");
+        console.log("Videos from server:", data);
 
-        // Normalize data
-        const normalized = response.data.map((video) => ({
+        const normalized = data.map((video) => ({
           ...video,
-          id: video._id || video.id || Math.random().toString(36).substr(2, 9), // Ensure unique ID
           genre: video.genre?.toLowerCase() || "",
           level: video.level?.toLowerCase() || "",
           tags: video.tags?.toLowerCase() || "",
@@ -32,9 +30,9 @@ const Learn = () => {
 
         setVideos(normalized);
         setFiltered(normalized);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching videos:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -57,8 +55,8 @@ const Learn = () => {
       const s = search.toLowerCase();
       result = result.filter(
         (v) =>
-          v.title.toLowerCase().includes(s) ||
-          v.tags.toLowerCase().includes(s)
+          v.title?.toLowerCase().includes(s) ||
+          v.tags?.toLowerCase().includes(s)
       );
     }
 
@@ -70,7 +68,7 @@ const Learn = () => {
   const closeModal = () => setModalVideo(null);
 
   return (
-    <div className="relative p-12 min-h-screen bg-transparent from-gray-100 to-white text-gray-800">
+    <div className="relative p-12 min-h-screen bg-transparent text-gray-800">
       <h1 className="text-3xl font-bold mb-6 text-red-100">🎓 Learn Videos</h1>
 
       {/* Search & Filters */}
@@ -116,12 +114,12 @@ const Learn = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filtered.slice(0, visibleCount).map((video) => (
               <div
-                key={video.id} // ✅ Unique key here
+                key={video._id}
                 className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl shadow-lg p-4 transform transition hover:-translate-y-1 hover:scale-105 duration-300 cursor-pointer"
                 onClick={() => openModal(video)}
               >
                 <div className="relative pb-[56.25%] rounded overflow-hidden shadow-inner">
-                  {video.video_url.includes("youtube.com") ? (
+                  {video.video_url?.includes("youtube.com") ? (
                     <iframe
                       src={video.video_url.replace("watch?v=", "embed/")}
                       className="absolute top-0 left-0 w-full h-full rounded"
@@ -152,7 +150,7 @@ const Learn = () => {
             ))}
           </div>
 
-          {/* Load More Button */}
+          {/* Load More */}
           {visibleCount < filtered.length && (
             <div className="flex justify-center mt-8">
               <button
@@ -177,7 +175,7 @@ const Learn = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative pb-[56.25%]">
-              {modalVideo.video_url.includes("youtube.com") ? (
+              {modalVideo.video_url?.includes("youtube.com") ? (
                 <iframe
                   src={modalVideo.video_url.replace("watch?v=", "embed/")}
                   className="absolute top-0 left-0 w-full h-full"
@@ -196,8 +194,12 @@ const Learn = () => {
               <h2 className="text-xl font-bold">{modalVideo.title}</h2>
               <p className="text-sm text-gray-600">{modalVideo.description}</p>
               <div className="flex gap-2 mt-3">
-                <span className="text-sm text-indigo-700">🎵 Genre: {modalVideo.genre}</span>
-                <span className="text-sm text-purple-700">📈 Level: {modalVideo.level}</span>
+                <span className="text-sm text-indigo-700">
+                  🎵 Genre: {modalVideo.genre}
+                </span>
+                <span className="text-sm text-purple-700">
+                  📈 Level: {modalVideo.level}
+                </span>
               </div>
               <button
                 onClick={closeModal}

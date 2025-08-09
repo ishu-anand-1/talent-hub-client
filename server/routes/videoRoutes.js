@@ -7,25 +7,55 @@ import { storage } from "../utils/cloudinary.js";
 const router = express.Router();
 const upload = multer({ storage });
 
-// === Upload Routes ===
-// Upload to Cloudinary (video file)
-router.post("/", verifyToken, upload.single("video"), videoController.uploadVideoToCloudinary);
+// ================== 📤 Upload Routes ==================
 
-// Save YouTube link
-router.post("/youtube", verifyToken, videoController.uploadYouTubeVideo);
+// Upload video file to Cloudinary (Authenticated)
+router.post(
+  "/upload",
+  verifyToken,
+  upload.single("video"),
+  (req, res, next) => {
+    if (!req.file) {
+      return res.status(400).json({ error: "No video file uploaded" });
+    }
+    next();
+  },
+  videoController.uploadVideoToCloudinary
+);
 
-// === Fetch Routes ===
-router.get("/category/:category", videoController.getVideosByCategory);
+// Save YouTube video link (Authenticated)
+router.post(
+  "/upload-youtube",
+  verifyToken,
+  videoController.uploadYouTubeVideo
+);
+
+// ================== 📄 Fetch Routes ==================
+
+// Fetch ALL videos (Learn Page)
 router.get("/get-all-video", videoController.getAllVideos);
+
+// Fetch logged-in user's videos (Talent Page)
 router.get("/my-videos", verifyToken, videoController.getMyVideos);
 
-// === Delete Route ===
+// Fetch videos by category (random 100)
+router.get("/category/:category", videoController.getVideosByCategory);
+
+// Filter videos by query params
+// Example: /filter?category=music&genre=rock&level=beginner
+router.get("/filter", videoController.getFilteredVideos);
+
+// ================== ❌ Delete Route ==================
+
+// Delete video by ID (Authenticated)
 router.delete("/:id", verifyToken, videoController.deleteVideo);
 
-// === Test Route (remove in production) ===
-router.post("/youtube-test", (req, res) => {
-  console.log("Test Hit");
-  res.json({ message: "Route working" });
+// ================== 🛠 Test Route ==================
+
+// Test route to verify video routes work
+router.get("/youtube-test", (req, res) => {
+  console.log("✅ YouTube Test Route Hit");
+  res.json({ message: "Video routes are working fine" });
 });
 
 export default router;

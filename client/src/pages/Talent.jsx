@@ -16,10 +16,11 @@ const Talent = () => {
   const genres = ["All", "Hip-hop", "Classical", "Jazz", "Pop"];
   const levels = ["All", "Beginner", "Intermediate", "Advanced"];
 
+  // Fetch uploaded videos
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get("/posts/videos");
+        const res = await axios.get("/videos/get-all-video"); // ✅ Updated API endpoint
         setVideos(res.data);
         setFilteredVideos(res.data);
       } catch (err) {
@@ -29,6 +30,7 @@ const Talent = () => {
     fetchVideos();
   }, []);
 
+  // Filter videos based on search + dropdowns
   useEffect(() => {
     const filtered = videos.filter((v) => {
       return (
@@ -36,7 +38,7 @@ const Talent = () => {
         (filters.genre === "All" || v.genre === filters.genre) &&
         (filters.level === "All" || v.level === filters.level) &&
         (v.title?.toLowerCase().includes(search.toLowerCase()) ||
-          v.tags?.toLowerCase().includes(search.toLowerCase()))
+          v.description?.toLowerCase().includes(search.toLowerCase()))
       );
     });
     setFilteredVideos(filtered);
@@ -54,7 +56,7 @@ const Talent = () => {
       <div className="flex flex-col md:flex-row gap-4 mb-8 justify-center">
         <input
           type="text"
-          placeholder="🔍 Search by title or tags..."
+          placeholder="🔍 Search by title or description..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 border rounded-md w-full md:w-1/3"
@@ -107,14 +109,19 @@ const Talent = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {filteredVideos.map((video) => (
             <div
-               key={video._id || video.id}
+              key={video._id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300"
             >
               <div className="relative pb-[56.25%]">
-                {video.video_url.includes("youtube.com") ? (
+                {video.video_url.includes("youtube.com") ||
+                video.video_url.includes("youtu.be") ? (
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={video.video_url.replace("watch?v=", "embed/")}
+                    src={
+                      video.video_url.includes("watch?v=")
+                        ? video.video_url.replace("watch?v=", "embed/")
+                        : video.video_url.replace("youtu.be/", "youtube.com/embed/")
+                    }
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

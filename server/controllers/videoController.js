@@ -1,9 +1,8 @@
 import Video from "../models/Video.js";
 import { v2 as cloudinary } from "cloudinary";
 
-
 // 📤 Upload via file (Cloudinary)
-export const uploadVideoToCloudinary  = async (req, res) => {
+export const uploadVideoToCloudinary = async (req, res) => {
   try {
     const user_id = req.user.id;
     const { title, description, category, genre, level } = req.body;
@@ -12,8 +11,6 @@ export const uploadVideoToCloudinary  = async (req, res) => {
       return res.status(400).json({ error: "All fields and video file are required." });
     }
 
-    const video_url = req.file.path;
-
     const videoData = new Video({
       user_id,
       title,
@@ -21,21 +18,22 @@ export const uploadVideoToCloudinary  = async (req, res) => {
       category: category.toLowerCase(),
       genre,
       level,
-      video_url,
+      video_url: req.file.path,
+      isLearnVideo: false 
     });
 
     await videoData.save();
-    res.status(201).json({ message: "Video uploaded successfully", video_url });
+    res.status(201).json({ message: "Video uploaded successfully", video_url: req.file.path });
   } catch (err) {
-    console.error("Upload error:", err);
-    res.status(500).json({ error: "Failed to upload video" });
+    console.error("❌ Upload error:", err);
+    res.status(500).json({ error: `Failed to upload video: ${err.message}` });
   }
 };
 
 // 📤 Upload via YouTube URL
-export const uploadYouTubeVideo  = async (req, res) => {
+export const uploadYouTubeVideo = async (req, res) => {
   try {
-    const user_id = req.user?.id;
+    const user_id = req.user.id;
     const { title, description, category, genre, level, video_url } = req.body;
 
     if (!title || !video_url || !category || !genre || !level) {
@@ -50,17 +48,18 @@ export const uploadYouTubeVideo  = async (req, res) => {
       genre,
       level,
       video_url,
+      isLearnVideo: false 
     });
 
     await video.save();
     res.status(201).json({ message: "YouTube video saved successfully" });
   } catch (err) {
-    console.error("Upload error:", err);
-    res.status(500).json({ error: "Failed to upload video" });
+    console.error("❌ Upload error:", err);
+    res.status(500).json({ error: `Failed to upload YouTube video: ${err.message}` });
   }
 };
 
-// 📄 Get all videos (with author name)
+// 📄 Get ALL videos (Learn Page)
 export const getAllVideos = async (req, res) => {
   try {
     const videos = await Video.find()
@@ -69,7 +68,7 @@ export const getAllVideos = async (req, res) => {
     res.status(200).json(videos);
   } catch (err) {
     console.error("❌ Error fetching videos:", err);
-    res.status(500).json({ error: "Failed to fetch videos" });
+    res.status(500).json({ error: `Failed to fetch videos: ${err.message}` });
   }
 };
 
@@ -79,9 +78,10 @@ export const getMyVideos = async (req, res) => {
     const videos = await Video.find({ user_id: req.user.id })
       .populate("user_id", "name")
       .sort({ createdAt: -1 });
-    res.json(videos);
+    res.status(200).json(videos);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch user videos" });
+    console.error("❌ Error fetching user videos:", err);
+    res.status(500).json({ error: `Failed to fetch user videos: ${err.message}` });
   }
 };
 
@@ -97,9 +97,10 @@ export const deleteVideo = async (req, res) => {
       return res.status(404).json({ error: "Video not found or unauthorized" });
     }
 
-    res.json({ message: "Video deleted successfully" });
+    res.status(200).json({ message: "Video deleted successfully" });
   } catch (err) {
-    res.status(500).json({ error: "Failed to delete video" });
+    console.error("❌ Delete error:", err);
+    res.status(500).json({ error: `Failed to delete video: ${err.message}` });
   }
 };
 
@@ -117,9 +118,10 @@ export const getFilteredVideos = async (req, res) => {
       .populate("user_id", "name")
       .sort({ createdAt: -1 });
 
-    res.json(videos);
+    res.status(200).json(videos);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch filtered videos" });
+    console.error("❌ Filter error:", err);
+    res.status(500).json({ error: `Failed to fetch filtered videos: ${err.message}` });
   }
 };
 
@@ -153,9 +155,9 @@ export const getVideosByCategory = async (req, res) => {
       },
     ]);
 
-    res.json(videos);
+    res.status(200).json(videos);
   } catch (err) {
     console.error("❌ DB error:", err);
-    res.status(500).json({ error: "Failed to fetch videos" });
+    res.status(500).json({ error: `Failed to fetch videos by category: ${err.message}` });
   }
 };
