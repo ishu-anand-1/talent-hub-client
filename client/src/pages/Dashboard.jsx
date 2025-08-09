@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../services/api";
 
+const API_BASE = "https://talent-hub-client-1.onrender.com"; 
 const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("dance");
@@ -12,7 +13,7 @@ const Dashboard = () => {
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/posts/upload", {
+      await axios.post(`${API_BASE}/posts/upload`, {
         title,
         category,
         video_url: url,
@@ -32,7 +33,7 @@ const Dashboard = () => {
 
   const fetchVideos = async () => {
     try {
-      const res = await axios.get("/posts/videos");
+      const res = await axios.get(`${API_BASE}/posts/videos`);
       setVideos(res.data);
     } catch (err) {
       console.error("Fetch failed");

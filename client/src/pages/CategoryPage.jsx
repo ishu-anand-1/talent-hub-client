@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "../services/api";
+import axios from "axios";
 
 export default function CategoryPage() {
-  const { category } = useParams(); // "Singing", "Instrument", or "Playlist"
+  const { category } = useParams();
   const [items, setItems] = useState([]);
   const [playingIndex, setPlayingIndex] = useState(null);
+
+  // ✅ Point axios to your live backend API
+  const API_BASE =
+    import.meta.env.VITE_API_BASE_URL || "https://talent-hub-client-1.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/posts/videos"); // your API returns all videos
+        const res = await axios.get(`${API_BASE}/posts/videos`, {
+          withCredentials: true, // if cookies/session needed
+        });
+
         if (category === "Playlist") {
           setItems(res.data.filter((v) => v.category === "Playlist"));
         } else {
@@ -34,15 +41,18 @@ export default function CategoryPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {items.map((item, i) => (
             <div
-              key={item.id}
+              key={item._id || item.id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition-all duration-300"
               onClick={() => category === "Playlist" && setPlayingIndex(i)}
             >
-              {/* VIDEO or AUDIO with thumbnail */}
+              {/* Playlist Rendering */}
               {category === "Playlist" ? (
                 <>
                   <img
-                    src={`https://source.unsplash.com/random/400x300?music&sig=${i}`} // replace with item.image if exists
+                    src={
+                      item.image ||
+                      `https://source.unsplash.com/random/400x300?music&sig=${i}`
+                    }
                     alt="song thumbnail"
                     className="w-full h-48 object-cover"
                   />
@@ -64,7 +74,7 @@ export default function CategoryPage() {
               ) : (
                 <>
                   <div className="relative pb-[56.25%]">
-                    {item.video_url.includes("youtube.com") ? (
+                    {item.video_url?.includes("youtube.com") ? (
                       <iframe
                         className="absolute top-0 left-0 w-full h-full"
                         src={item.video_url.replace("watch?v=", "embed/")}

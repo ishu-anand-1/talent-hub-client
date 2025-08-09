@@ -22,7 +22,8 @@ connectDB();
 // ✅ CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173',
-  'http://talent-hub-client.vercel.app'
+ 
+  "https://talent-hub-client-1.onrender.com" 
 ];
 
 app.use(cors({
@@ -33,7 +34,9 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true
+  credentials: true,
+   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 
@@ -57,6 +60,13 @@ app.get('/', (req, res) => {
 // ✅ Handle 404 for unknown routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
+});
+app.use((err, req, res, next) => {
+  console.error('🔥 Error:', err.message);
+  if (err.message.includes('CORS')) {
+    return res.status(403).json({ error: 'CORS policy does not allow access from this origin.' });
+  }
+  res.status(500).json({ error: 'Server error' });
 });
 
 

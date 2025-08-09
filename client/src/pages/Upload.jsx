@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "../services/api";
 import { useNavigate } from "react-router-dom";
-
+const API_BASE_URL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:10000/api" // Local backend
+    : "https://talent-hub-backend.onrender.com/api"; 
 const categories = ["Dance", "Singing", "Instruments"];
 const genres = ["Hip-hop", "Classical", "Jazz", "Pop"];
 const levels = ["Beginner", "Intermediate", "Advanced"];
@@ -27,7 +30,7 @@ export default function Upload() {
     e.preventDefault();
     setMessage("");
     try {
-      await axios.post("/videos/youtube", form, {
+      await axios.post(`${API_BASE_URL}/videos/youtube`, form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

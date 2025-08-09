@@ -7,6 +7,10 @@ const Login = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
+
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,21 +18,25 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
-      const res = await axios.post("/auth/login", form);
+      const res = await axios.post(`${API_URL}/auth/login`, form);
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      setError(err.response?.data?.error || "Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-100 via-white to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 transition-all duration-300">
       <div className="max-w-6xl w-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        
         {/* Left Section */}
-        <div className="md:w-1/2 p-10 flex flex-col justify-center bg-white dark:bg-gray-800 transition">
-          <img src="/logo.png" alt="Logo-image" className="h-10 mb-4" />
+        <div className="md:w-1/2 p-10 flex flex-col justify-center">
+          <img src="/logo.png" alt="Logo" className="h-10 mb-4" />
           <h2 className="text-4xl font-bold mb-2 text-gray-800 dark:text-white">
             Welcome Back to TalentHub
           </h2>
@@ -44,7 +52,7 @@ const Login = () => {
         </div>
 
         {/* Right Section (Form) */}
-        <div className="md:w-1/2 bg-gray-50 dark:bg-gray-900 px-10 py-8 transition">
+        <div className="md:w-1/2 bg-gray-50 dark:bg-gray-900 px-10 py-8">
           <h3 className="text-2xl font-bold text-center mb-2 text-gray-800 dark:text-white">
             Log In to Your Account
           </h3>
@@ -52,7 +60,14 @@ const Login = () => {
             Access exclusive lessons and upload your talent
           </p>
 
+          {error && (
+            <div className="bg-red-100 text-red-600 text-sm p-2 rounded mb-4">
+              {error}
+            </div>
+          )}
+
           <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Email */}
             <div>
               <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
                 Email
@@ -71,6 +86,7 @@ const Login = () => {
               </div>
             </div>
 
+            {/* Password */}
             <div>
               <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
                 Password
@@ -87,8 +103,6 @@ const Login = () => {
                   required
                 />
               </div>
-
-              {/* ✨ Add this here */}
               <p className="text-right text-sm mt-1">
                 <Link
                   to="/forgot-password"
@@ -99,13 +113,18 @@ const Login = () => {
               </p>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-2 mt-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 transition duration-300 shadow-md"
+              disabled={loading}
+              className={`w-full py-2 mt-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-lg transition duration-300 shadow-md ${
+                loading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
+              }`}
             >
-              Log In
+              {loading ? "Logging in..." : "Log In"}
             </button>
 
+            {/* Register Link */}
             <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
               Don't have an account?{" "}
               <Link
@@ -116,6 +135,7 @@ const Login = () => {
               </Link>
             </p>
 
+            {/* Social Login */}
             <div className="text-center text-sm text-gray-400 mt-4">
               or continue with
             </div>
@@ -129,7 +149,6 @@ const Login = () => {
               >
                 Google
               </a>
-
               <a
                 href="https://www.instagram.com/"
                 target="_blank"

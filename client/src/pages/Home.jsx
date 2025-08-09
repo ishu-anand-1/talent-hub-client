@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Upload } from "lucide-react";
 import CardGrid from "../components/CardGrid";
+const API_BASE = import.meta.env.VITE_API_BASE || "https://talent-hub-client-1.onrender.com";
+
 const Home = () => {
   return (
-    <div className="bg-gradient-to-b from-blue-100 to-white dark:from-gray-900 dark:to-gray-950 min-h-screen font-poppins transition-all duration-300 rounded-2xl">
+    <div className="bg-gradient-to-b from-blue-100 to-white dark:from-gray-900 dark:to-gray-950  min-h-screen font-poppins transition-all duration-300 rounded-2xl">
       {/* Hero Section */}
       <section className="text-center py-20 px-4">
         <div className="mb-4 inline-block px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full shadow-lg">

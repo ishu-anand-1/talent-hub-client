@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "../services/api";
+import axios from "axios";
+
+// Base API URL from .env (e.g. VITE_API_URL=https://your-backend.com)
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+});
 
 const genres = ["all", "hip-hop", "classical", "jazz", "pop"];
 const levels = ["all", "beginner", "intermediate", "advanced"];
@@ -17,7 +22,7 @@ const Learn = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const { data } = await axios.get("/videos/get-all-video");
+        const { data } = await API.get("/videos/get-all-video");
         console.log("Videos from server:", data);
 
         const normalized = data.map((video) => ({
