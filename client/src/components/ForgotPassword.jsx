@@ -24,7 +24,7 @@ const ForgotPassword = () => {
 
   const handleSendOTP = async () => {
     try {
-      const res = await axios.post(`/api/auth/forgot-password`, { email });
+      const res = await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email });
       alert(res.data.message);
       setStep(2);
     } catch (error) {
