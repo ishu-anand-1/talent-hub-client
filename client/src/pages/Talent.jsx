@@ -15,14 +15,14 @@ const Talent = () => {
   const categories = ["All", "Dance", "Singing", "Instrument"];
   const genres = ["All", "Hip-hop", "Classical", "Jazz", "Pop"];
   const levels = ["All", "Beginner", "Intermediate", "Advanced"];
-    const API_BASE =  import.meta.env.VITE_API_URL||  "http://localhost:5000"
+
 
   // Fetch uploaded videos
   // Fetch uploaded videos
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/videos/get-all-video`); // ✅ Updated API endpoint
+        const res = await axios.get("/videos/get-all-video"); // ✅ Updated API endpoint
         setVideos(res.data);
         setFilteredVideos(res.data);
       } catch (err) {

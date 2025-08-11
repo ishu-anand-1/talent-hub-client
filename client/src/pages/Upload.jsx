@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "../services/api";
 import { useNavigate } from "react-router-dom";
-const API_BASE_URL = import.meta.env.VITE_API_URL||  "http://localhost:5000" 
+ 
 const categories = ["Dance", "Singing", "Instruments"];
 const genres = ["Hip-hop", "Classical", "Jazz", "Pop"];
 const levels = ["Beginner", "Intermediate", "Advanced"];
@@ -27,12 +27,12 @@ export default function Upload() {
     e.preventDefault();
     setMessage("");
     try {
-      await axios.post(`${API_BASE_URL}/videos/youtube`, form, {
+      await axios.post("/videos/youtube", form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setMessage("✅ Video uploaded successfully!");
+      setMessage(" Video uploaded successfully!");
       setTimeout(() => navigate("/learn"), 1500);
     } catch (err) {
       console.error(err);
