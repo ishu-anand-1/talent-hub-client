@@ -25,7 +25,7 @@ export const uploadVideoToCloudinary = async (req, res) => {
     await videoData.save();
     res.status(201).json({ message: "Video uploaded successfully", video_url: req.file.path });
   } catch (err) {
-    console.error("❌ Upload error:", err);
+    console.error(" Upload error:", err);
     res.status(500).json({ error: `Failed to upload video: ${err.message}` });
   }
 };
@@ -54,12 +54,12 @@ export const uploadYouTubeVideo = async (req, res) => {
     await video.save();
     res.status(201).json({ message: "YouTube video saved successfully" });
   } catch (err) {
-    console.error("❌ Upload error:", err);
+    console.error(" Upload error:", err);
     res.status(500).json({ error: `Failed to upload YouTube video: ${err.message}` });
   }
 };
 
-// 📄 Get ALL videos (Learn Page)
+
 export const getAllVideos = async (req, res) => {
   try {
     const videos = await Video.find()
@@ -67,7 +67,7 @@ export const getAllVideos = async (req, res) => {
       .sort({ createdAt: -1 });
     res.status(200).json(videos);
   } catch (err) {
-    console.error("❌ Error fetching videos:", err);
+    console.error(" Error fetching videos:", err);
     res.status(500).json({ error: `Failed to fetch videos: ${err.message}` });
   }
 };
@@ -80,7 +80,7 @@ export const getMyVideos = async (req, res) => {
       .sort({ createdAt: -1 });
     res.status(200).json(videos);
   } catch (err) {
-    console.error("❌ Error fetching user videos:", err);
+    console.error(" Error fetching user videos:", err);
     res.status(500).json({ error: `Failed to fetch user videos: ${err.message}` });
   }
 };
