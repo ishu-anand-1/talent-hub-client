@@ -7,9 +7,9 @@ export default function CategoryPage() {
   const [items, setItems] = useState([]);
   const [playingIndex, setPlayingIndex] = useState(null);
 
-  // ✅ Point axios to your live backend API
+ 
   const API_BASE =
-    import.meta.env.VITE_API_BASE_URL || "https://talent-hub-client-1.onrender.com";
+    import.meta.env.VITE_API_URL 
 
   useEffect(() => {
     const fetchData = async () => {

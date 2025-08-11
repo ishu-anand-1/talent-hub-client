@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Base API URL from .env (e.g. VITE_API_URL=https://your-backend.com)
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL 
 });
 
 const genres = ["all", "hip-hop", "classical", "jazz", "pop"];
