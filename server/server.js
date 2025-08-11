@@ -12,14 +12,16 @@ import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
+// DB connect
 connectDB();
 
+// Trust proxy (needed for secure cookies on Vercel/Render)
+app.set('trust proxy', 1);
 
+// Allowed origins
 const allowedOrigins = [
   'http://localhost:5173',
   'https://talent-hub-client.vercel.app',
@@ -27,46 +29,35 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // Allow requests without origin (e.g., curl, mobile apps)
-
-    const isAllowed =
-      allowedOrigins.includes(origin) ||
-      /\.vercel\.app$/.test(origin); 
-
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// ✅ Middleware
+// Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ API Routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/playlists', playlistRoutes);
 
-// ✅ Health Check Route
+// Health check
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-// ✅ Handle 404 for unknown routes
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
+// Error handler
 app.use((err, req, res, next) => {
   console.error('🔥 Error:', err.message);
   if (err.message.includes('CORS')) {
@@ -75,7 +66,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Server error' });
 });
 
-// ✅ Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
