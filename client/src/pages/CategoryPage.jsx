@@ -7,9 +7,9 @@ export default function CategoryPage() {
   const [items, setItems] = useState([]);
   const [playingIndex, setPlayingIndex] = useState(null);
 
- 
+
   const API_BASE =
-    import.meta.env.VITE_API_URL 
+    import.meta.env.VITE_API_BASE_URL || "https://talent-hub-client-1.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
