@@ -15,7 +15,7 @@ const Talent = () => {
   const categories = ["All", "Dance", "Singing", "Instrument"];
   const genres = ["All", "Hip-hop", "Classical", "Jazz", "Pop"];
   const levels = ["All", "Beginner", "Intermediate", "Advanced"];
-    const API_BASE = "https://your-backend-name.onrender.com/api";
+    const API_BASE =  import.meta.env.VITE_API_URL||  "http://localhost:5000"
 
   // Fetch uploaded videos
   // Fetch uploaded videos

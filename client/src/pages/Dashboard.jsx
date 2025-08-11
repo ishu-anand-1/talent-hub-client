@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../services/api";
 
-const API_BASE = "https://talent-hub-client-1.onrender.com"; 
+const API_BASE =  import.meta.env.VITE_API_URL||  "http://localhost:5000"
 const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("dance");

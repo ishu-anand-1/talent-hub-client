@@ -5,10 +5,8 @@ import "./FloatingShapes.css";
 
 // Automatically choose API base URL depending on environment
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.MODE === "development"
-    ? "http://localhost:5000"
-    : "https://talent-hub-server.onrender.com");
+  import.meta.env.VITE_API_URL||  "http://localhost:5000"
+   
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
