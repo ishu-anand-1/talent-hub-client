@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import api from "../services/api";
+import api from "../services/api"; // use our configured instance
 import { useNavigate } from "react-router-dom";
 import "./FloatingShapes.css";
-
-// Automatically choose API base URL depending on environment
-
-   
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
@@ -23,7 +19,7 @@ const ForgotPassword = () => {
 
   const handleSendOTP = async () => {
     try {
-      const res = await axios.post(`/api/auth/forgot-password`, { email });
+      const res = await api.post(`/api/auth/forgot-password`, { email });
       alert(res.data.message);
       setStep(2);
     } catch (error) {
@@ -32,23 +28,17 @@ const ForgotPassword = () => {
   };
 
   const handleVerifyOTP = async () => {
-    console.log("Starting OTP verification...");
     setLoading(true);
-
     try {
-      const res = await axios.post(`/api/auth/verify-otp`, {
+      const res = await api.post(`/api/auth/verify-otp`, {
         email: email.trim(),
         otp: otp.trim(),
       });
-
-      console.log("OTP verified successfully", res.data);
       alert(res.data.message);
       setStep(3);
     } catch (error) {
-      console.error("OTP verification error:", error?.response?.data || error.message);
       alert(error?.response?.data?.error || "OTP verification failed");
     } finally {
-      console.log("Ending OTP verification. Turning off loading.");
       setLoading(false);
     }
   };
@@ -58,19 +48,16 @@ const ForgotPassword = () => {
       alert("Please fill in both password fields.");
       return;
     }
-
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match.");
       return;
     }
-
     try {
-      const res = await axios.post(`/api/auth/reset-password`, {
+      const res = await api.post(`/api/auth/reset-password`, {
         email,
         newPassword,
         confirmPassword,
       });
-
       alert(res.data.message);
       navigate("/login");
     } catch (error) {
@@ -80,14 +67,12 @@ const ForgotPassword = () => {
 
   return (
     <div className="relative min-h-screen w-full">
-      {/* Background Layer with Floating Shapes */}
       <div className="floating-shape-bg">
         <div className="shape shape-1"></div>
         <div className="shape shape-2"></div>
         <div className="shape shape-3"></div>
       </div>
 
-      {/* The form container */}
       <div className="flex justify-center items-center min-h-screen relative z-10">
         <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
           {step === 1 && (
@@ -121,9 +106,7 @@ const ForgotPassword = () => {
               <button
                 disabled={loading}
                 onClick={handleVerifyOTP}
-                className={`w-full ${
-                  loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
-                } text-white p-2 rounded transition`}
+                className={`w-full ${loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"} text-white p-2 rounded transition`}
               >
                 {loading ? "Verifying..." : "Verify OTP"}
               </button>
