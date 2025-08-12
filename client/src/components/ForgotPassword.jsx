@@ -23,7 +23,7 @@ const ForgotPassword = () => {
 
   const handleSendOTP = async () => {
     try {
-      const res = await axios.post(`/api/auth/forgot-password`, { email });
+      const res = await axios.post(`/auth/forgot-password`, { email });
       alert(res.data.message);
       setStep(2);
     } catch (error) {
@@ -36,7 +36,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(`/api/auth/verify-otp`, {
+      const res = await axios.post(`/auth/verify-otp`, {
         email: email.trim(),
         otp: otp.trim(),
       });
@@ -65,7 +65,7 @@ const ForgotPassword = () => {
     }
 
     try {
-      const res = await axios.post(`/api/auth/reset-password`, {
+      const res = await axios.post(`/auth/reset-password`, {
         email,
         newPassword,
         confirmPassword,
