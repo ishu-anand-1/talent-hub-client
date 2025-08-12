@@ -25,7 +25,7 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
   'http://localhost:5173',
   'https://talent-hub-client.vercel.app',
-  'https://talent-hub-client-1.onrender.com'
+
 ];
 
 app.use(cors({
