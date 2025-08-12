@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../services/api";
 
-const API_BASE =  import.meta.env.VITE_API_URL||  "http://localhost:5000"
+
 const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("dance");
@@ -13,7 +13,7 @@ const Dashboard = () => {
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE}/posts/upload`, {
+      await axios.post(`/api/posts/upload`, {
         title,
         category,
         video_url: url,
@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   const fetchVideos = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/posts/videos`);
+      const res = await axios.get(`/api/posts/videos`);
       setVideos(res.data);
     } catch (err) {
       console.error("Fetch failed");
@@ -46,7 +46,7 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 text-black dark:text-white transition-all duration-300">
-      <h2 className="text-2xl font-bold mb-4">Upload Performance</h2>
+      <h2 className="text-2xl font-bold mb-4 text-red-100">Upload Performance</h2>
       <form onSubmit={handleUpload} className="flex flex-col gap-4 mb-10">
         <input
           type="text"
@@ -98,7 +98,7 @@ const Dashboard = () => {
         </button>
       </form>
 
-      <h3 className="text-xl font-bold mb-2">Your Videos</h3>
+      <h3 className="text-xl font-bold mb-2 text-red-100">Your Videos</h3>
       <div className="grid gap-4">
         {videos.map((v) => (
           <div

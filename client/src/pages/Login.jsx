@@ -9,7 +9,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-   const API_URL =  import.meta.env.VITE_API_URL||  "http://localhost:5000"
+   
 
 
   const handleChange = (e) =>
@@ -20,7 +20,7 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await axios.post(`${API_URL}/auth/login`, form);
+      const res = await axios.post(`/api/auth/login`, form);
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
     } catch (err) {
@@ -145,7 +145,7 @@ const Login = () => {
                 href="https://accounts.google.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border px-4 py-2 rounded-md text-sm hover:bg-gray-100 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 transition"
+                className="border px-4 py-2 rounded-md text-sm hover:bg-gray-500 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 transition text-black"
               >
                 Google
               </a>
@@ -153,7 +153,7 @@ const Login = () => {
                 href="https://www.instagram.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border px-4 py-2 rounded-md text-sm hover:bg-gray-100 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 transition"
+                className="border px-4 py-2 rounded-md text-sm hover:bg-gray-500 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 transition text-black"
               >
                 Instagram
               </a>

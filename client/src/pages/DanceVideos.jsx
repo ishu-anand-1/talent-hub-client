@@ -8,7 +8,7 @@ const DanceVideos = () => {
   useEffect(() => {
     const fetchDanceVideos = async () => {
       try {
-        const res = await axios.get("/videos/category/Dance"); // your backend API
+        const res = await axios.get("/api/videos/category/Dance"); // your backend API
         console.log("✅ Response from backend:", res.data);
         setVideos(res.data);
       } catch (err) {

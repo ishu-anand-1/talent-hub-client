@@ -27,7 +27,7 @@ export default function Upload() {
     e.preventDefault();
     setMessage("");
     try {
-      await axios.post(`${API_BASE_URL}/videos/youtube`, form, {
+      await axios.post(`/api/videos/youtube`, form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -49,7 +49,7 @@ export default function Upload() {
           boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
         }}
       >
-        <h1 className="text-3xl font-bold mb-6 text-center text-white">Upload Your Video</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-red-100">Upload Your Video</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <input

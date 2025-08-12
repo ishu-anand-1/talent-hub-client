@@ -15,14 +15,14 @@ const Talent = () => {
   const categories = ["All", "Dance", "Singing", "Instrument"];
   const genres = ["All", "Hip-hop", "Classical", "Jazz", "Pop"];
   const levels = ["All", "Beginner", "Intermediate", "Advanced"];
-    const API_BASE = import.meta.env.VITE_API_URL||  "http://localhost:5000"
+    
 
   // Fetch uploaded videos
   // Fetch uploaded videos
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/videos/get-all-video`); // ✅ Updated API endpoint
+        const res = await axios.get(`/api/videos/get-all-video`); // ✅ Updated API endpoint
         setVideos(res.data);
         setFilteredVideos(res.data);
       } catch (err) {
@@ -52,7 +52,7 @@ const Talent = () => {
 
   return (
     <div className="px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-center">🎭 Talent Gallery</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-red-100">🎭 Talent Gallery</h1>
 
       {/* Search & Filters */}
       <div className="flex flex-col md:flex-row gap-4 mb-8 justify-center">
@@ -61,14 +61,14 @@ const Talent = () => {
           placeholder="🔍 Search by title or description..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 border rounded-md w-full md:w-1/3"
+          className="px-4 py-2 border rounded-md w-full md:w-1/3 bg-white text-black"
         />
 
         <select
           name="category"
           value={filters.category}
           onChange={handleFilterChange}
-          className="px-4 py-2 border rounded-md"
+          className="px-4 py-2 border rounded-md bg-white text-black"
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>
@@ -81,7 +81,7 @@ const Talent = () => {
           name="genre"
           value={filters.genre}
           onChange={handleFilterChange}
-          className="px-4 py-2 border rounded-md"
+          className="px-4 py-2 border rounded-md bg-white text-black"
         >
           {genres.map((g) => (
             <option key={g} value={g}>
@@ -94,7 +94,7 @@ const Talent = () => {
           name="level"
           value={filters.level}
           onChange={handleFilterChange}
-          className="px-4 py-2 border rounded-md"
+          className="px-4 py-2 border rounded-md bg-white text-black"
         >
           {levels.map((lvl) => (
             <option key={lvl} value={lvl}>

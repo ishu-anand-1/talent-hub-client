@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "./FloatingShapes.css";
 
 // Automatically choose API base URL depending on environment
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL||  "http://localhost:5000"
+
    
 
 const ForgotPassword = () => {
@@ -24,7 +23,7 @@ const ForgotPassword = () => {
 
   const handleSendOTP = async () => {
     try {
-      const res = await axios.post(`${API_BASE_URL}/api/auth/forgot-password`, { email });
+      const res = await axios.post(`/api/auth/forgot-password`, { email });
       alert(res.data.message);
       setStep(2);
     } catch (error) {
@@ -37,7 +36,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(`${API_BASE_URL}/api/auth/verify-otp`, {
+      const res = await axios.post(`/api/auth/verify-otp`, {
         email: email.trim(),
         otp: otp.trim(),
       });
@@ -66,7 +65,7 @@ const ForgotPassword = () => {
     }
 
     try {
-      const res = await axios.post(`${API_BASE_URL}/api/auth/reset-password`, {
+      const res = await axios.post(`/api/auth/reset-password`, {
         email,
         newPassword,
         confirmPassword,

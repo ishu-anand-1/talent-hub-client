@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+
+import api from "../services/api"; 
 
 export default function CategoryPage() {
   const { category } = useParams();
@@ -8,13 +9,12 @@ export default function CategoryPage() {
   const [playingIndex, setPlayingIndex] = useState(null);
 
 
-  const API_BASE =
-    import.meta.env.VITE_API_BASE_URL || "https://talent-hub-client-1.onrender.com";
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/posts/videos`, {
+        const res = await api.get(`/api/posts/videos`, {
           withCredentials: true, // if cookies/session needed
         });
 
