@@ -21,8 +21,10 @@ function Navbar() {
     <nav className="flex justify-between items-center px-6 py-3 bg-white dark:bg-gray-900 shadow-lg transition-all duration-300 top-0 relative z-50">
       {/* Logo */}
       <div className="flex items-center gap-2">
+         <a href ="/">
         <Music2 className="text-indigo-600" />
         <h1 className="text-2xl font-extrabold text-indigo-600">TalentHub</h1>
+        </a>
       </div>
 
       {/* Desktop Nav */}
