@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Music2, Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
-
+import { Navigate } from "react-router-dom";
 function Navbar() {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
-
+  const navigate = useNavigate();
   const navLinks = [
     { label: "Home", to: "/" },
     { label: "Learn", to: "/learn" },
@@ -20,14 +20,15 @@ function Navbar() {
   return (
     <nav className="flex justify-between items-center px-6 py-3 bg-white dark:bg-gray-900 shadow-lg transition-all duration-300 top-0 relative z-50">
       {/* Logo */}
-      <a href="/">
+      
       <div className="flex items-center gap-2">
-         
+         <button onclick={()=> navigate("/")}
         <Music2 className="text-indigo-600" />
         <h1 className="text-2xl font-extrabold text-indigo-600">TalentHub</h1>
+        </button>
       
       </div>
-       </a>
+       
       {/* Desktop Nav */}
       <ul className="hidden md:flex gap-6 font-medium">
         {navLinks.map(({ label, to }) => (
