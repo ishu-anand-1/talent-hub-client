@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation,Navigate } from "react-router-dom";
+import {Link, useLocation,Navigate} from "react-router-dom";
 import { Music2, Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
 
@@ -8,7 +8,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
-  const navigate = useNavigate();
+  const navigate =useNavigate();
   const navLinks = [
     { label: "Home", to: "/" },
     { label: "Learn", to: "/learn" },
