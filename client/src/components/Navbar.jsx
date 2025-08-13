@@ -8,7 +8,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
-  const navigate =useNavigate();
+  const navigate = Navigate();
   const navLinks = [
     { label: "Home", to: "/" },
     { label: "Learn", to: "/learn" },
