@@ -20,13 +20,14 @@ function Navbar() {
   return (
     <nav className="flex justify-between items-center px-6 py-3 bg-white dark:bg-gray-900 shadow-lg transition-all duration-300 top-0 relative z-50">
       {/* Logo */}
+      <a href="/">
       <div className="flex items-center gap-2">
          
         <Music2 className="text-indigo-600" />
         <h1 className="text-2xl font-extrabold text-indigo-600">TalentHub</h1>
       
       </div>
-
+       </a>
       {/* Desktop Nav */}
       <ul className="hidden md:flex gap-6 font-medium">
         {navLinks.map(({ label, to }) => (
