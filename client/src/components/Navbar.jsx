@@ -22,7 +22,7 @@ function Navbar() {
       {/* Logo */}
       
       <div className="flex items-center gap-2">
-         <button onclick={()=> navigate("/")}
+         <button onClick={()=>navigate("/")}>
         <Music2 className="text-indigo-600" />
         <h1 className="text-2xl font-extrabold text-indigo-600">TalentHub</h1>
         </button>
