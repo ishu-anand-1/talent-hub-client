@@ -145,13 +145,13 @@ const Register = () => {
             <div className="flex justify-center gap-4 mt-2">
               <button
                 type="button"
-                className="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                className="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md text-sm hover:bg-gray-700 dark:hover:bg-gray-700 transition text-black"
               >
                 Google
               </button>
               <button
                 type="button"
-                className="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                className="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md text-sm hover:bg-gray-700 dark:hover:bg-gray-700 transition text-black"
               >
                 Facebook
               </button>
