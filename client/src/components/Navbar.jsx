@@ -22,8 +22,8 @@ function Navbar() {
       
       
       <div className="flex items-center gap-2">
-        <button onClick={()=>navigate("/")}>
-        <Music2 className="text-indigo-600" />
+        <button onClick={()=>navigate("/")} className="flex items-center gap-2 hover:opacity-80 transition">
+        <Music2 className="text-indigo-600 w-6 h-6" />
         <h1 className="text-2xl font-extrabold text-indigo-600">TalentHub</h1>
         </button>
       
